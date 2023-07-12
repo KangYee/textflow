@@ -72,6 +72,7 @@ public fun TextFlow(
     maxLines: Int = Int.MAX_VALUE,
     onTextLayout: (TextLayoutResult?, TextLayoutResult?) -> Unit = { _, _ -> },
     style: TextStyle = LocalTextStyle.current,
+    maxObstacleHeightAmendValue: Int = 0,
     obstacleContent: @Composable () -> Unit = {},
 ) {
     TextFlow(
@@ -92,6 +93,7 @@ public fun TextFlow(
         maxLines = maxLines,
         onTextLayout = onTextLayout,
         style = style,
+        maxObstacleHeightAmendValue = maxObstacleHeightAmendValue,
         obstacleContent = obstacleContent,
     )
 }
@@ -147,6 +149,7 @@ public fun TextFlow(
     maxLines: Int = Int.MAX_VALUE,
     onTextLayout: (TextLayoutResult?, TextLayoutResult?) -> Unit = { _, _ -> },
     style: TextStyle = LocalTextStyle.current,
+    maxObstacleHeightAmendValue: Int = 0,
     obstacleContent: @Composable () -> Unit = {},
 ) {
     SubcomposeLayout(modifier) { constraints ->
@@ -159,7 +162,7 @@ public fun TextFlow(
 
         // Take the largest width and height from obstacles
         val maxObstacleWidth = obstaclePlaceables.maxOfOrNull { it.width } ?: 0
-        val maxObstacleHeight = obstaclePlaceables.maxOfOrNull { it.height } ?: 0
+        val maxObstacleHeight = obstaclePlaceables.maxOfOrNull { it.height - maxObstacleHeightAmendValue } ?: 0
 
         // And calculate an offset for obstacle(s)
         val obstacleOffset = when (obstacleAlignment) {
